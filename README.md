@@ -65,6 +65,7 @@ make watch
 | `make exec` | コンテナに接続 |
 | `make compile` | src/ 下の TeX ファイルをコンパイル |
 | `make watch` | ファイルの変更を監視してコンパイル |
+| `make copy` | 今日の日付で新しい .tex ファイルを作成。変更を監視し、自動コンパイル |
 | `make clean` | LaTeX 中間ファイルを削除 |
 | `make clean-all` | すべての LaTeX 生成ファイルを削除 |
 | `make open-pdf` | 生成された PDF を開く (Mac用) |
