@@ -28,18 +28,16 @@ compile: ## src 下の .tex ファイルをコンパイル
 
 watch: ## ファイル変更を監視してコンパイル
 	@mkdir -p pdf build
-	@if [ -z "$(filter-out watch,$(MAKECMDGOALS))" ]; then \
-		echo "監視するファイルを指定してください。例: make watch 1900-01-01.tex"; \
-		exit 1; \
-	fi
-	$(eval TEX_FILE := $(filter-out watch,$(MAKECMDGOALS)))
-	@echo "watching: $(TEX_FILE)"
+	@echo "watching: src/*.tex"
 	docker compose exec -T latex bash -c '\
 		cd /workspace && \
 		while true; do \
-			TEXINPUTS=./src//: latexmk -pdfdvi src/$(TEX_FILE) && \
-			cp build/$$(basename $(TEX_FILE) .tex).pdf pdf/; \
-			inotifywait -e close_write src/$(TEX_FILE); \
+			changed_file=$$(inotifywait -e close_write --format "%w%f" src/*.tex); \
+			if [ -f "$$changed_file" ]; then \
+				echo "Compiling: $$changed_file"; \
+				TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
+				cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
+			fi; \
 		done \
 	'
 

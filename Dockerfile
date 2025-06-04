@@ -10,6 +10,7 @@ RUN apt-get update && \
     git \
     make \
     inotify-tools \
+    procps \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
