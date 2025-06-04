@@ -29,14 +29,23 @@ compile: ## src 下の .tex ファイルをコンパイル
 watch: ## ファイル変更を監視してコンパイル
 	@mkdir -p pdf build
 	@if [ -z "$(filter-out watch,$(MAKECMDGOALS))" ]; then \
-		echo "監視するファイルを指定してください。例: make watch sample.tex"; \
+		echo "監視するファイルを指定してください。例: make watch 1900-01-01.tex"; \
 		exit 1; \
 	fi
 	$(eval TEX_FILE := $(filter-out watch,$(MAKECMDGOALS)))
-	docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pvc -pdfdvi src/$(TEX_FILE)"
+	@echo "watching: $(TEX_FILE)"
+	docker compose exec -T latex bash -c '\
+		cd /workspace && \
+		while true; do \
+			TEXINPUTS=./src//: latexmk -pdfdvi src/$(TEX_FILE) && \
+			cp build/$$(basename $(TEX_FILE) .tex).pdf pdf/; \
+			inotifywait -e close_write src/$(TEX_FILE); \
+		done \
+	'
 
 copy: ## 最新の .tex ファイルをコピーして日付を更新
 	@FILE_NAME="src/$$(TZ=Asia/Tokyo date '+%Y-%m-%d').tex"; \
+	FILE_BASENAME="$$(TZ=Asia/Tokyo date '+%Y-%m-%d').tex"; \
 	if [ ! -e "$${FILE_NAME}" ]; then \
 		latest_tex=$$(ls -t src/*.tex | head -n 1); \
 		if [ -z "$$latest_tex" ]; then \
@@ -46,6 +55,7 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LC_TIME=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
 		echo "CREATED: $${FILE_NAME}"; \
 		code "$${FILE_NAME}"; \
+		make watch "$${FILE_BASENAME}" & \
 	else \
 		echo "[ERROR] ALREADY EXISTS: $${FILE_NAME}"; \
 	fi

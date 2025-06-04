@@ -22,6 +22,12 @@ $pdf_mode = 4;
 # 出力ディレクトリの設定
 $out_dir = 'build';
 
+# PDF の出力先を指定
+ensure_path('pdf');
+$pdf_dir = 'pdf';
+$pdf_update_method = 2;  # PDFを指定ディレクトリに自動コピー
+$pdf_update_command = 'cp %D pdf/%R.pdf';
+
 # 自動プレビューを無効化
 $preview_continuous_mode = 0;
 $preview_mode = 0;
