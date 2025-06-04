@@ -10,14 +10,11 @@
 # 初回セットアップ（Docker イメージのビルドと起動）
 make setup
 
-# TeXファイルのコンパイル（src/*.tex のすべてのファイル）
-make compile
+# src 下の .tex ファイルをコンパイルし、PDF に変換
+make
 
-# ファイル変更を監視して自動コンパイル
-make watch
-
-# 生成されたPDFを確認 (Mac のみ)
-make open-pdf
+# 最新の .tex ファイルの内容をコピーし、現在の日付で新規 .tex ファイルを作成
+make copy
 ```
 
 ## 環境構築
@@ -25,11 +22,11 @@ make open-pdf
 ### 1. Dockerコンテナのビルドと起動
 
 ```bash
-# 初回セットアップ（推奨）
+# 初回セットアップ (推奨)
 make setup
 
 # または個別に実行
-make build  # Dockerイメージをビルド
+make build  # Docker イメージをビルド
 make up     # コンテナを起動
 ```
 
@@ -39,13 +36,13 @@ make up     # コンテナを起動
 make exec
 ```
 
-## LaTeX文書の作成とコンパイル
+## LaTeX 文書の作成とコンパイル
 
-### 1. TeXファイルの配置
+### 1. TeX ファイルの配置
 .tex ファイルは `src/` ディレクトリに配置すること：
 ```
 src/
-├── sample.tex
+├── 1900-01-01.tex
 └── other.tex
 ```
 
@@ -56,7 +53,7 @@ src/
 make compile
 
 # 特定のファイルを監視して自動コンパイル
-make watch main.tex
+make watch 1900-01-01.tex
 ```
 
 生成されたPDFファイルは `pdf/` ディレクトリに出力される。
@@ -72,10 +69,10 @@ make watch main.tex
 | `make down` | コンテナを停止・削除 |
 | `make exec` | コンテナに接続 |
 | `make compile` | src/下のTeXファイルをコンパイル |
-| `make watch (sample.tex)` | 指定ファイルの変更を監視してコンパイル |
+| `make watch (1900-01-01.tex)` | 指定ファイルの変更を監視してコンパイル |
 | `make clean` | LaTeX中間ファイルを削除 |
 | `make clean-all` | すべてのLaTeX生成ファイルを削除 |
-| `make open-pdf` | 生成されたPDFを開く（Mac用） |
+| `make open-pdf` | 生成されたPDFを開く (Mac用) |
 | `make restart` | コンテナを再起動 |
 | `make rebuild` | 完全に再ビルド |
 | `make dev` | 開発モード（起動 + 監視コンパイル） |
@@ -90,7 +87,7 @@ texlive-japanese-template/
 ├── .latexmkrc         # LaTeXmk 設定
 ├── build/             # コンパイル中間ファイル
 │   └── *.aux, *.dvi など
-└── pdf/               # 生成されたPDF
+└── pdf/               # 生成された PDF
 │   └── *.pdf
 ├── src/               # TeX ソースファイル
 │   └── *.tex
