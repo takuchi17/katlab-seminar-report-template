@@ -14,26 +14,19 @@ make setup
 make
 
 # 最新の .tex ファイルの内容をコピーし、現在の日付で新規 .tex ファイルを作成
+# 変更を自動監視し、変更後の内容で PDF を再生成
 make copy
 ```
 
+`make copy` 実行後は、新規作成した .tex ファイルの変更を監視する。
+
 ## 環境構築
 
-### 1. Dockerコンテナのビルドと起動
+### Docker コンテナのビルドと起動
 
 ```bash
-# 初回セットアップ (推奨)
+# 初回セットアップ
 make setup
-
-# または個別に実行
-make build  # Docker イメージをビルド
-make up     # コンテナを起動
-```
-
-### 2. コンテナへの接続 (必要な場合)
-
-```bash
-make exec
 ```
 
 ## LaTeX 文書の作成とコンパイル
@@ -49,14 +42,16 @@ src/
 ### 2. コンパイル方法
 
 ```bash
-# src/ 下のすべての .tex ファイルをコンパイル
+# src/ 下のすべての .tex ファイルをコンパイル、PDF 出力
 make compile
 
-# 特定のファイルを監視して自動コンパイル
-make watch 1900-01-01.tex
+# src/ 下のすべての .tex ファイルを監視し、変更があったら自動コンパイル、PDF 出力
+make watch
 ```
 
 生成されたPDFファイルは `pdf/` ディレクトリに出力される。
+`make watch` コマンド実行時、変更を自動で監視する。
+
 
 ## 利用可能なMakeコマンド
 
@@ -64,15 +59,15 @@ make watch 1900-01-01.tex
 |---------|------|
 | `make help` | 利用可能なコマンド一覧を表示 |
 | `make setup` | 初回セットアップ（ビルド + 起動） |
-| `make build` | Dockerイメージをビルド |
+| `make build` | Docker イメージをビルド |
 | `make up` | コンテナを起動 |
 | `make down` | コンテナを停止・削除 |
 | `make exec` | コンテナに接続 |
-| `make compile` | src/下のTeXファイルをコンパイル |
-| `make watch (1900-01-01.tex)` | 指定ファイルの変更を監視してコンパイル |
-| `make clean` | LaTeX中間ファイルを削除 |
-| `make clean-all` | すべてのLaTeX生成ファイルを削除 |
-| `make open-pdf` | 生成されたPDFを開く (Mac用) |
+| `make compile` | src/ 下の TeX ファイルをコンパイル |
+| `make watch` | ファイルの変更を監視してコンパイル |
+| `make clean` | LaTeX 中間ファイルを削除 |
+| `make clean-all` | すべての LaTeX 生成ファイルを削除 |
+| `make open-pdf` | 生成された PDF を開く (Mac用) |
 | `make restart` | コンテナを再起動 |
 | `make rebuild` | 完全に再ビルド |
 | `make dev` | 開発モード（起動 + 監視コンパイル） |
@@ -80,7 +75,7 @@ make watch 1900-01-01.tex
 ## ディレクトリ構成
 
 ```
-texlive-japanese-template/
+katlab-seminar-report-template/
 ├── Dockerfile          # Docker 環境定義
 ├── compose.yaml        # Docker Compose 設定
 ├── Makefile           # ビルドタスク定義

@@ -32,7 +32,7 @@ watch: ## ファイル変更を監視してコンパイル
 	docker compose exec -T latex bash -c '\
 		cd /workspace && \
 		while true; do \
-			changed_file=$$(inotifywait -e close_write --format "%w%f" src/*.tex); \
+			changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
 			if [ -f "$$changed_file" ]; then \
 				echo "Compiling: $$changed_file"; \
 				TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
