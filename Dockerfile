@@ -12,12 +12,6 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# TeXLive パッケージのインストール
-RUN tlmgr update --self && \
-    tlmgr install \
-    algorithms \
-    algorithmicx
-
 # 作業ディレクトリの設定
 WORKDIR /workspace
 
