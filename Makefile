@@ -35,6 +35,21 @@ watch: ## ファイル変更を監視してコンパイル
 	$(eval TEX_FILE := $(filter-out watch,$(MAKECMDGOALS)))
 	docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pvc -pdfdvi src/$(TEX_FILE)"
 
+copy: ## 最新の .tex ファイルをコピーして日付を更新
+	@FILE_NAME="src/$$(TZ=Asia/Tokyo date '+%Y-%m-%d').tex"; \
+	if [ ! -e "$${FILE_NAME}" ]; then \
+		latest_tex=$$(ls -t src/*.tex | head -n 1); \
+		if [ -z "$$latest_tex" ]; then \
+			echo "[ERROR] No tex files found in src/"; \
+			exit 1; \
+		fi; \
+		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LC_TIME=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
+		echo "CREATED: $${FILE_NAME}"; \
+		code "$${FILE_NAME}"; \
+	else \
+		echo "[ERROR] ALREADY EXISTS: $${FILE_NAME}"; \
+	fi
+
 clean: ## LaTeX 中間ファイルを削除
 	@for tex in $(TEX_FILES); do \
 		echo "中間ファイル削除中: $$tex"; \
