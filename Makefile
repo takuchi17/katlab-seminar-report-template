@@ -54,6 +54,8 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 		fi; \
 		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LC_TIME=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
 		echo "CREATED: $${FILE_NAME}"; \
+		docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pdfdvi src/$${FILE_BASENAME}" && \
+		docker compose exec -T latex cp build/$$(basename $${FILE_BASENAME} .tex).pdf pdf/; \
 		code "$${FILE_NAME}"; \
 		make watch "$${FILE_BASENAME}" & \
 	else \
