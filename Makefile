@@ -15,24 +15,26 @@ ifeq ($(IN_DEVCONTAINER),1)
 else
     # Docker Compose 経由での実行コマンド
     DOCKER_PREFIX = docker compose exec -T latex
-    CD_PREFIX = bash -c "cd /workspace &&
+    CD_PREFIX = bash -c cd /workspace &&
 endif
 
 # 共通のコマンドを定義
-LATEX_CMD = $(CD_PREFIX) TEXINPUTS=./src//: latexmk -pdfdvi
-LATEX_CLEAN = $(DOCKER_PREFIX) latexmk -c
-LATEX_CLEAN_ALL = $(DOCKER_PREFIX) latexmk -C
-CP_CMD = $(DOCKER_PREFIX) cp
-RM_CMD = $(DOCKER_PREFIX) rm -rf
-WATCH_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) \
-	while true; do \
-		changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
-		if [ -f "$$changed_file" ]; then \
-			echo "Compiling: $$changed_file"; \
-			TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
-			cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
-		fi; \
-	done$(if $(DOCKER_PREFIX),";",)
+LATEX_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) TEXINPUTS=./src//: latexmk -pdfdvi
+LATEX_CLEAN = $(DOCKER_PREFIX) $(CD_PREFIX) latexmk -c
+LATEX_CLEAN_ALL = $(DOCKER_PREFIX) $(CD_PREFIX) latexmk -C
+CP_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) cp
+RM_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) rm -rf
+WATCH_CMD = $(DOCKER_PREFIX) bash -c '\
+    cd /workspace && \
+    while true; do \
+        changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
+        if [ -f "$$changed_file" ]; then \
+            echo "Compiling: $$changed_file"; \
+            TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
+            cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
+        fi; \
+    done \
+'
 LATEX_SINGLE = $(LATEX_CMD)
 
 # デフォルトターゲット
