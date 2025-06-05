@@ -22,12 +22,43 @@ make copy
 
 ## 環境構築
 
-### Docker コンテナのビルドと起動
+## 環境構築方法
+
+### 1. Makefile を使用した環境構築
+
+`make` コマンドが利用可能な環境では、以下の手順で環境を構築できます：
 
 ```bash
-# 初回セットアップ
+# 初回セットアップ (Docker イメージのビルドと起動)
 make setup
+
+# src/ 下のすべての .tex ファイルを強制的に再コンパイル
+make compile
+
+# src/ 下のすべての .tex ファイルを監視し、変更があったら自動コンパイル、PDF 出力
+make watch
 ```
+
+生成された PDF ファイルは `pdf/` ディレクトリに出力される。
+
+### 2. Dev Containers を使用した環境構築
+
+VS Code の Dev Containers を使用して環境を構築することもできる：
+
+1. VS Code に [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 拡張機能をインストールする。
+2. このリポジトリを VS Code で開く。
+3. コマンドパレット（`Cmd + Shift + P または Ctrl + Shift + P`）を開き、`Dev Containers: Rebuild and Reopen in Container` を選択する。もしくは、GUI 左下の青い >< から、`コンテナーで再度開く` を選択する。
+4. コンテナ内で以下のコマンドを使用して作業を進める：
+
+```bash
+# src/ 下のすべての .tex ファイルを強制的に再コンパイル
+make compile
+
+# src/ 下のすべての .tex ファイルを監視し、変更があったら自動コンパイル、PDF 出力
+make watch
+```
+
+Dev Container 環境下では Docker 関連のコマンドの操作は不要。
 
 ## LaTeX 文書の作成とコンパイル
 
@@ -55,23 +86,32 @@ make watch
 
 ## 利用可能なMakeコマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `make help` | 利用可能なコマンド一覧を表示 |
-| `make setup` | 初回セットアップ（ビルド + 起動） |
-| `make build` | Docker イメージをビルド |
-| `make up` | コンテナを起動 |
-| `make down` | コンテナを停止・削除 |
-| `make exec` | コンテナに接続 |
-| `make compile` | src/ 下の TeX ファイルをコンパイル |
-| `make watch` | ファイルの変更を監視してコンパイル |
-| `make copy` | 今日の日付で新しい .tex ファイルを作成。変更を監視し、自動コンパイル |
-| `make clean` | LaTeX 中間ファイルを削除 |
-| `make clean-all` | すべての LaTeX 生成ファイルを削除 |
-| `make open-pdf` | 生成された PDF を開く (Mac用) |
-| `make restart` | コンテナを再起動 |
-| `make rebuild` | 完全に再ビルド |
-| `make dev` | 開発モード（起動 + 監視コンパイル） |
+### LaTeX 関連コマンド
+
+| コマンド         | 説明                                                                 |
+|------------------|----------------------------------------------------------------------|
+| `make help`      | 利用可能なコマンド一覧を表示                                         |
+| `make compile`   | `src` 下の TeX ファイルを強制再コンパイル                                 |
+| `make watch`     | ファイルの変更を監視してコンパイル                                   |
+| `make copy`      | 今日の日付で新しい `.tex` ファイルを作成。変更を監視し、自動コンパイル |
+| `make clean`     | LaTeX 中間ファイルを削除                                             |
+| `make clean-all` | すべての LaTeX 生成ファイルを削除                                     |
+| `make open-pdf`  | 生成された PDF を開く (Mac用)                                        |
+
+### Docker 関連コマンド
+
+| コマンド         | 説明                                                                 |
+|------------------|----------------------------------------------------------------------|
+| `make setup`     | 初回セットアップ（ビルド + 起動）                                    |
+| `make build`     | Docker イメージをビルド                                             |
+| `make up`        | コンテナを起動                                                      |
+| `make down`      | コンテナを停止・削除                                                |
+| `make exec`      | コンテナに接続                                                     |
+| `make stop`      | コンテナを停止                                                     |
+| `make logs`      | コンテナのログを表示                                               |
+| `make restart`   | コンテナを再起動                                                   |
+| `make rebuild`   | 完全に再ビルド                                                     |
+| `make dev`       | 開発モード（起動 + 監視コンパイル）
 
 ## ディレクトリ構成
 
@@ -106,7 +146,7 @@ make clean-all  # すべての生成ファイルを削除
 make compile    # 再コンパイル
 ```
 
-3. Docker環境の再構築
+3. Docker 環境の再構築
 ```bash
 make rebuild    # コンテナの完全な再構築
 ```
