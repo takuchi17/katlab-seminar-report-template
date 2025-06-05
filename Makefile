@@ -24,14 +24,15 @@ LATEX_CLEAN = $(DOCKER_PREFIX) latexmk -c
 LATEX_CLEAN_ALL = $(DOCKER_PREFIX) latexmk -C
 CP_CMD = $(DOCKER_PREFIX) cp
 RM_CMD = $(DOCKER_PREFIX) rm -rf
-WATCH_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) while true; do \
-    changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
-    if [ -f "$$changed_file" ]; then \
-        echo "Compiling: $$changed_file"; \
-        TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
-        cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
-    fi; \
-done$(if $(DOCKER_PREFIX),',"")
+WATCH_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) \
+    while true; do \
+        changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
+        if [ -f "$$changed_file" ]; then \
+            echo "Compiling: $$changed_file"; \
+            TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
+            cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
+        fi; \
+    done$(if $(DOCKER_PREFIX),";",)
 LATEX_SINGLE = $(LATEX_CMD)
 
 # デフォルトターゲット
@@ -70,7 +71,7 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 			echo "[ERROR] No tex files found in src/"; \
 			exit 1; \
 		fi; \
-		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LC_TIME=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
+		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LANG=C LC_ALL=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
 		echo "CREATED: $${FILE_NAME}"; \
 		$(LATEX_SINGLE) src/$${FILE_BASENAME} && \
 		$(CP_CMD) build/$$(basename $${FILE_BASENAME} .tex).pdf pdf/; \
