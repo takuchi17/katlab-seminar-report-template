@@ -4,6 +4,36 @@
 TEX_FILES := $(wildcard src/*.tex)
 PDF_FILES := $(patsubst src/%.tex,pdf/%.pdf,$(TEX_FILES))
 
+# 実行環境の判定
+IN_DEVCONTAINER := $(shell test -f /.dockerenv && test -f /workspace/.devcontainer/devcontainer.json && echo 1 || echo 0)
+
+# 環境に応じたコマンドの定義
+ifeq ($(IN_DEVCONTAINER),1)
+    # Dev Container 内での実行コマンド
+    DOCKER_PREFIX =
+    CD_PREFIX = cd /workspace &&
+else
+    # Docker Compose 経由での実行コマンド
+    DOCKER_PREFIX = docker compose exec -T latex
+    CD_PREFIX = bash -c "cd /workspace &&
+endif
+
+# 共通のコマンドを定義
+LATEX_CMD = $(CD_PREFIX) TEXINPUTS=./src//: latexmk -pdfdvi
+LATEX_CLEAN = $(DOCKER_PREFIX) latexmk -c
+LATEX_CLEAN_ALL = $(DOCKER_PREFIX) latexmk -C
+CP_CMD = $(DOCKER_PREFIX) cp
+RM_CMD = $(DOCKER_PREFIX) rm -rf
+WATCH_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) while true; do \
+    changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
+    if [ -f "$$changed_file" ]; then \
+        echo "Compiling: $$changed_file"; \
+        TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
+        cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
+    fi; \
+done$(if $(DOCKER_PREFIX),',"")
+LATEX_SINGLE = $(LATEX_CMD)
+
 # デフォルトターゲット
 all: $(PDF_FILES) ## すべての TeX ファイルを PDF に変換
 
@@ -14,32 +44,22 @@ help: ## ヘルプを表示
 # ファイル別の PDF ビルドルール
 pdf/%.pdf: src/%.tex
 	@mkdir -p pdf build
-	docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pdfdvi $<"
-	docker compose exec -T latex cp build/$(notdir $(basename $<)).pdf $@
+	$(LATEX_SINGLE) $<
+	$(CP_CMD) build/$(notdir $(basename $<)).pdf $@
 
 # LaTeX 関連コマンド
 compile: ## src 下の .tex ファイルをコンパイル
 	@mkdir -p pdf build
 	@for tex in $(TEX_FILES); do \
 		echo "コンパイル: $$tex"; \
-		docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pdfdvi $$tex"; \
-		docker compose exec -T latex cp build/$$(basename $${tex%.tex}).pdf pdf/; \
+		$(LATEX_CMD) $$tex; \
+		$(CP_CMD) build/$$(basename $${tex%.tex}).pdf pdf/; \
 	done
 
 watch: ## ファイル変更を監視してコンパイル
 	@mkdir -p pdf build
 	@echo "watching: src/*.tex"
-	docker compose exec -T latex bash -c '\
-		cd /workspace && \
-		while true; do \
-			changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
-			if [ -f "$$changed_file" ]; then \
-				echo "Compiling: $$changed_file"; \
-				TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
-				cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
-			fi; \
-		done \
-	'
+	$(WATCH_CMD)
 
 copy: ## 最新の .tex ファイルをコピーして日付を更新
 	@FILE_NAME="src/$$(TZ=Asia/Tokyo date '+%Y-%m-%d').tex"; \
@@ -52,8 +72,8 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 		fi; \
 		cat "$$latest_tex" | sed -e "s/^\\\date{.*}/\\\date{$$(LC_TIME=C TZ=Asia/Tokyo date '+%Y-%m-%d %a')}/g" > "$${FILE_NAME}"; \
 		echo "CREATED: $${FILE_NAME}"; \
-		docker compose exec -T latex bash -c "cd /workspace && TEXINPUTS=./src//: latexmk -pdfdvi src/$${FILE_BASENAME}" && \
-		docker compose exec -T latex cp build/$$(basename $${FILE_BASENAME} .tex).pdf pdf/; \
+		$(LATEX_SINGLE) src/$${FILE_BASENAME} && \
+		$(CP_CMD) build/$$(basename $${FILE_BASENAME} .tex).pdf pdf/; \
 		code "$${FILE_NAME}"; \
 		make watch "$${FILE_BASENAME}" & \
 	else \
@@ -63,16 +83,16 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 clean: ## LaTeX 中間ファイルを削除
 	@for tex in $(TEX_FILES); do \
 		echo "中間ファイル削除中: $$tex"; \
-		docker compose exec latex latexmk -c $$tex; \
-		done
-	docker compose exec latex rm -rf pdf/*
+		$(LATEX_CLEAN) $$tex; \
+	done
+	$(RM_CMD) pdf/*
 
 clean-all: ## すべての LaTeX 生成ファイルを削除
 	@for tex in $(TEX_FILES); do \
 		echo "生成ファイル完全削除中: $$tex"; \
-		docker compose exec latex latexmk -C $$tex; \
+		$(LATEX_CLEAN_ALL) $$tex; \
 	done
-	docker compose exec latex rm -rf pdf/* build/*
+	$(RM_CMD) pdf/* build/*
 
 # Docker 関連コマンド
 build: ## Docker イメージをビルド
