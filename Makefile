@@ -60,6 +60,8 @@ compile: ## src 下の .tex ファイルをコンパイル
 		$(LATEX_CMD) $$tex; \
 		$(CP_CMD) build/$$(basename $${tex%.tex}).pdf pdf/; \
 	done
+	@echo "コンパイル完了、ファイルの変更監視を開始"
+	@make watch
 
 watch: ## ファイル変更を監視してコンパイル
 	@mkdir -p pdf build
