@@ -25,14 +25,14 @@ LATEX_CLEAN_ALL = $(DOCKER_PREFIX) latexmk -C
 CP_CMD = $(DOCKER_PREFIX) cp
 RM_CMD = $(DOCKER_PREFIX) rm -rf
 WATCH_CMD = $(DOCKER_PREFIX) $(CD_PREFIX) \
-    while true; do \
-        changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
-        if [ -f "$$changed_file" ]; then \
-            echo "Compiling: $$changed_file"; \
-            TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
-            cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
-        fi; \
-    done$(if $(DOCKER_PREFIX),";",)
+	while true; do \
+		changed_file=$$(inotifywait -e close_write,create --format "%w%f" src/*.tex); \
+		if [ -f "$$changed_file" ]; then \
+			echo "Compiling: $$changed_file"; \
+			TEXINPUTS=./src//: latexmk -pdfdvi "$$changed_file" && \
+			cp build/$$(basename "$$changed_file" .tex).pdf pdf/; \
+		fi; \
+	done$(if $(DOCKER_PREFIX),";",)
 LATEX_SINGLE = $(LATEX_CMD)
 
 # デフォルトターゲット
@@ -95,41 +95,72 @@ clean-all: ## すべての LaTeX 生成ファイルを削除
 	done
 	$(RM_CMD) pdf/* build/*
 
+# Docker 関連コマンド実行時の実行環境チェック
+# devcontainer 下で docker コマンドを実行できないので、その場合は警告文を表示して終了する
+check_docker_cmd = @if [ "$(IN_DEVCONTAINER)" = "1" ]; then \
+	echo "[ERROR] Dev Container 環境では Docker 関連コマンドは使用できません"; \
+	exit 1; \
+fi
+
 # Docker 関連コマンド
 build: ## Docker イメージをビルド
+	$(check_docker_cmd)
 	docker compose build
 
 up: ## コンテナを起動（バックグラウンド）
+	$(check_docker_cmd)
 	docker compose up -d
 
 down: ## コンテナを停止・削除
+	$(check_docker_cmd)
 	docker compose down
 
 exec: ## コンテナに接続
+	$(check_docker_cmd)
 	docker compose exec latex bash
 
 stop: ## コンテナを停止
+	$(check_docker_cmd)
 	docker compose stop
 
 logs: ## コンテナのログを表示
+	$(check_docker_cmd)
 	docker compose logs -f latex
 
 # 開発用コマンド
-setup: build up ## 初回セットアップ (ビルド + 起動)
-	@echo "環境が準備できました。以下のコマンドでコンパイルできます:"
-	@echo "  make compile  # src 下の .tex ファイルをコンパイル"
-	@echo "  make watch sample.tex    # 指定ファイルの変更を監視してコンパイル"
+setup: ## 初回セットアップ (ビルド + 起動)
+	@if [ "$(IN_DEVCONTAINER)" = "1" ]; then \
+		echo "[INFO] Dev Container 環境では make setup による初回セットアップは不要です。"; \
+		echo "以下のコマンドでコンパイルできます:"; \
+		echo "  make compile  # src 下の .tex ファイルをコンパイル"; \
+		echo "  make watch   # ファイルの変更を監視してコンパイル"; \
+	else \
+		make build up; \
+		echo "環境構築を完了しました。以下のコマンドでコンパイルできます:"; \
+		echo "  make compile  # src 下の .tex ファイルをコンパイル"; \
+		echo "  make watch   # ファイルの変更を監視してコンパイル"; \
+	fi
 
-dev: up watch ## 開発モード (起動 + 監視コンパイル)
+dev: ## 開発モード (起動 + 監視コンパイル)
+	@if [ "$(IN_DEVCONTAINER)" = "1" ]; then \
+		echo "[WARNING] Dev Container 環境では make up は不要です。make watch を実行します"; \
+		make watch; \
+	else \
+		make up watch; \
+	fi
 
-restart: down up ## コンテナを再起動
+restart: ## コンテナを再起動
+	$(check_docker_cmd)
+	@make down up
 
-rebuild: down build up ## 完全に再ビルド
+rebuild: ## 完全に再ビルド
+	$(check_docker_cmd)
+	@make down build up
 
 # ファイル操作
 open-pdf: ## 生成されたPDFを開く（Mac用）
 	@if [ -f build/sample.pdf ]; then \
 		open build/sample.pdf; \
 	else \
-		echo "PDFファイルが見つかりません。先にmake compileを実行してください。"; \
+		echo "PDFファイルが見つかりません。先に make compile を実行してください。"; \
 	fi
