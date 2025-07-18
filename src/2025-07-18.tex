@@ -1,0 +1,80 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-07-18 Fri}
+\maketitle
+
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item スカイコムさんMTG
+	\begin{itemize}
+		\item 7/17(木) 15:00～16:00
+		\item spaCyを実際に使っての報告
+		\item 具体的な生成例はまだ提示されていない。企業(取引先?)に問い合わせているところ
+		\item ブロックごとの意味ラベル生成も行う方針(ASLAの分割粒度)
+		\item 次回ミーティングは7/30(水) 13:00～14:00に取り合えず決定
+	\end{itemize}
+	\item 九州支部
+	\begin{itemize}
+		\item 適用例を書いている途中
+		\item 文章少しとできれば図を1つ載せたい
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item ロボコン関連
+	\begin{itemize}
+		\item ロボコンMTG
+		\item タスク
+		\item 試走会1
+		\item モデルMTG
+	\end{itemize}
+	\item 医学部剣持研究室バイト
+\end{itemize}
+
+
+\section{次までにやること}
+
+\subsection*{研究関連}
+\begin{itemize}
+	\item ブロック単位での意味ラベル生成をBERTで試す(例えば、「introduction」「list」など)
+	\item 意味ラベル生成関連研究調査
+	\begin{itemize}
+		\item 特に評価方法を知りたい
+	\end{itemize}
+	\item 九州支部
+	\begin{itemize}
+	\item 「適用例」の続きと「おわりに」の執筆
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item ロボコン関連
+		\begin{itemize}
+			\item ロボコンMTG
+			\item モデルMTG
+		\end{itemize}
+	\item 医学部剣持研究室バイト
+	\item 7/23(水)から7/25(金)の間に木花キャンパスで、非常勤用の健康診断を受ける(23日午前の予定)
+\end{itemize}
+
+\end{document}
