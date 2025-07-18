@@ -1,0 +1,91 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-07-11 Fri}
+\maketitle
+
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item スカイコムさんMTG
+	\item 7/8(火) 11:00~12:00
+	\item どういうラベルを生成するかの検討
+	\item spaCyという自然言語処理ライブラリを知った
+\end{itemize}
+\begin{itemize}
+	\item spaCy + SudachiPyを使ってみた
+	\begin{itemize}
+	\item MeCabよりも分かち書きの粒度が柔軟(国際/連合/安全/保障/理事/会 → 国際連合/安全保障/理事会)
+	\item 固有表現抽出と分類の精度が高い
+	\begin{itemize}
+		\item Person、Money、Date、Provinceなどを分類できた
+		\item 文脈での意味は考慮されていない(日付は日付でも、「開催日」なのか「締め切り日」なのかなど)
+		\item spaCyで分類して、その周辺の文脈を専用のモデルに入力すると、効率的に意味ラベルを生成できそう
+	\end{itemize}
+\end{itemize}
+\item 東北大のBERTモデルのトークナイザ―にSudachiを使ってみた
+\begin{itemize}
+	\item MeCabを前提に学習されているため、やはり精度が低い(学習データが少ない場合のみ実験)
+\end{itemize}
+	\item 九州支部
+	\begin{itemize}
+	\item 考察、実装、はじめにを書いた
+	\item スペース的におわりにと適用例が入らないかもしれないため、実装を工夫する。
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item ロボコン関連
+	\begin{itemize}
+		\item ロボコンMTG
+		\item タスク
+		\item モデルMTG
+	\end{itemize}
+	\item 医学部剣持研究室バイト
+\end{itemize}
+
+
+\section{次までにやること}
+
+\subsection*{研究関連}
+\begin{itemize}
+	\item 研究室でかPCの環境構築
+	\item スカイコムさんMTG
+	\begin{itemize}
+	\item 7/15(火) 11:00~12:00
+	\item 具体例の図を作成して臨む
+	\end{itemize}
+	\item 九州支部
+	\begin{itemize}
+	\item 入らなくても、適用例、おわりに、参考文献をとりあえず書く
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item ロボコン関連
+		\begin{itemize}
+			\item ロボコンMTG
+			\item モデルMTG
+			\item 試走会1
+		\end{itemize}
+\end{itemize}
+
+\end{document}
