@@ -1,0 +1,89 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\textbf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-12-17 Wed}
+\maketitle
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+    \item 11クラスでのデータセット構築
+    \begin{itemize}
+        \item text, title, author, table, figure, caption, pageHeader, pageFooter, sectionHeader, pageNumber, annotationの11クラス
+        \item 619/1489完了(科学論文形式、帳票形式)
+    \end{itemize}
+    \item スカイコムさんMTG(12/11(木) 10:00～11:00)
+    \begin{itemize}
+        \item 今後の方針確認(11クラスデータセット作成、カタログっぽいデータセット探し)
+        \item 今年度中に科学論文形式でグループ化できればうれしい。
+    \end{itemize}
+    \item 新しくできた分だけで学習を回してみた
+    \begin{itemize}
+        \item 少なくとも、どれも現在のモデルより精度が高い。1段階検出なので、速度も速い。
+        \item モデルを変えたのに加えて、データセットのアノテーションをすべて見直した成果もある？
+        \item RTMDet-tiny(YOLOシリーズを超えることを目的にOpenmmlabが開発した(2022)。Apache-2.0ライセンス)
+        \begin{itemize}
+            \item Openmmlabの事前学習物体検出モデルをファインチューニング
+            \item "coco/bbox\_mAP": 0.796
+            \item "coco/bbox\_mAP\_50": 0.985
+            \item "coco/bbox\_mAP\_75": 0.944
+        \end{itemize}
+        \item RTMDet-small
+        \begin{itemize}
+            \item Openmmlabの事前学習物体検出モデルをファインチューニング
+            \item "coco/bbox\_mAP": 0.82
+            \item "coco/bbox\_mAP\_50": 0.992
+            \item "coco/bbox\_mAP\_75": 0.959
+        \end{itemize}
+        \item RTMDet-small
+        \begin{itemize}
+            \item スクラッチ学習(ライセンス問題回避のため)
+            \item "coco/bbox\_mAP": 0.762
+            \item "coco/bbox\_mAP\_50": 0.979
+            \item "coco/bbox\_mAP\_75": 0.907
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+    \item バイト
+    \item 研究室紹介
+\end{itemize}
+
+
+\section{次までにやること}
+\subsection*{研究関連}
+\begin{itemize}
+    \item スカイコムさんMTG
+    \begin{itemize}
+        \item 12/25(木)10:00～11:00
+    \end{itemize}
+    \item データセット構築
+    \item テキスト系領域の順序関係推論モデルのアーキテクチャ調査
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+    \item バイト
+    \item 研究室忘年会(12/19(金)17:30\textasciitilde 19:30)
+    \item 12/21(日)-24(水)不在
+\end{itemize}
+\end{document}

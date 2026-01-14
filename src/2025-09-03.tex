@@ -1,0 +1,83 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-09-03 Wed}
+\maketitle
+
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item ASLA
+	\begin{itemize}
+	\item スカイコムさんMTG(8/26(火) 10:00~11:00)
+	\begin{itemize}
+		\item 図・表・テキスト領域の意味的グルーピングに決定
+		\item 電子文書の種類は問わない
+		\item MTGではマルチモーダルモデルを用いたクラスタリングを検討
+	\end{itemize}
+	\item グルーピング方法についての調査
+	\begin{itemize}
+		\item マルチモーダルモデルの調査
+		\begin{itemize}
+		\item 画像とテキストの両方から特徴埋め込みを生成するモデルに、CLIPやLayoutLMv3などがある
+		\item まだ試せてはいないが、学習データをどう用意するかが課題
+		\end{itemize}
+		\item 段階的な手法でのグルーピング
+		\begin{itemize}
+		\item 図・表領域を画像として扱い、キャプション生成モデルおよびOCRで画像内の文字を取得してテキスト化
+		\item テキスト領域と合わせてテキストベースのクラスタリングを行う
+		\item 文章の意味的類似度を計算するモデルとして、Sentence-BERTを用いた
+		\item ある程度はうまくいくが、OCRでの高精度なテキスト抽出が課題
+		\end{itemize}
+	\end{itemize}
+	\end{itemize}
+	\item 九州支部プレゼンテーション資料作成
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item ロボコン関連
+	\begin{itemize}
+		\item ロボコンMTG
+		\item モデル提出
+	\end{itemize}
+	\item 社会ニーズ
+	\item ロボコン関連
+	\item バイト
+\end{itemize}
+
+
+\section{次までにやること}
+
+\subsection*{研究関連}
+\begin{itemize}
+	\item ASLA
+	\begin{itemize}
+	\item マルチモーダルでのグルーピング手法の調査
+	\item スカイコムさんMTG(9/4(火) 10:00~11:00)
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item ロボコン関連
+	\item 私的な予定で来週いっぱい忙しい
+\end{itemize}
+
+\end{document}

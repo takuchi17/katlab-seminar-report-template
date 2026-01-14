@@ -1,0 +1,72 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-10-29 Wed}
+\maketitle
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item データセット調査
+	\begin{itemize}
+		\item 柿木さんに聞き取りをした
+		\begin{itemize}
+		\item 修論前(10月あたり)からは自分のPCで作業していて、現在そのPCは人に譲ったため初期化済み
+		\item Driveを確認していただいたところ、かなりデータを残せていなかった模様。
+	\end{itemize}
+	\item 修論時のデータセットがどれかもわからず、柿木さんのDriveにあるデータセットには、訓練、検証、テストデータ間で重複があり、計1629枚しかない。(修論には2161枚と書いてある。)
+	\item 柿木さんの修論時の数値が正しいかも保障できないので、新しくモデルを作ることにした
+	\item 作成する必要があるモデルのデータセットのうち、約850枚について、新規アノテーション、および、見直しをした
+	\item モデル作成中(3/4個とりあえず作った)
+	\end{itemize}
+	\item 自分の拡張の方針変更
+		\begin{itemize}
+		\item 領域間の関係性抽出に生かせる拡張として、テキストの抽出精度向上(および正しいラベルを生成)と図表キャプション生成をすることにした
+		\item 確実に成果が出て、評価もしやすいという点も考慮
+		\item Gemini 2.0 Flash-Lite のAPI を用いて、テキスト抽出とキャプション生成を行う
+		\item テキスト抽出の精度は関係性構築の上では欠かせないと判断し、精度が良い方法を優先
+	    \end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item 講義・TA
+	\item バイト
+	\item ロボコン関連(ミーティング以外ほぼ手付かず)
+\end{itemize}
+
+
+\section{次までにやること}
+\subsection*{研究関連}
+\begin{itemize}
+	\item スカイコムさんMTG(10/30(木))
+	\item ICAROB
+	\begin{itemize}
+		\item 残りのモデル作成
+		\item 評価
+		\item 論文全体の流れとアブスト第一稿を10/31(金)までに片山先生に見ていただくことを目標。
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+	\item バイト
+	\item ロボコン関連
+\end{itemize}
+\end{document}

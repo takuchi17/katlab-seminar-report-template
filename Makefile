@@ -88,7 +88,6 @@ copy: ## 最新の .tex ファイルをコピーして日付を更新
 		$(LATEX_SINGLE) src/$${FILE_BASENAME} && \
 		$(CP_CMD) build/$$(basename $${FILE_BASENAME} .tex).pdf pdf/; \
 		code "$${FILE_NAME}"; \
-		make watch "$${FILE_BASENAME}" & \
 	else \
 		echo "[ERROR] ALREADY EXISTS: $${FILE_NAME}"; \
 	fi

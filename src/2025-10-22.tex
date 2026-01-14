@@ -1,0 +1,79 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-10-22 Wed}
+\maketitle
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item スカイコムさんMTG(10/15(木) 11:00～12:00)
+	\begin{itemize}
+		\item LayoutLMv3で関係性を学習をやってみる方針で進める
+		\item まずは同一ページ内で
+	\end{itemize}
+	\item ICAROB
+	\begin{itemize}
+		\item 方針を決めるために柿木さんのこれまでの論文を確認
+	    \begin{itemize}
+			\item ICAROB: 190枚の日本語の科学技術論文データセットで学習したモデルを使用。ルールベースの提案。maskrcnnからcascadercnnへ変更。
+			\item ICEGC: ASLAという言葉は出していなく、文書分類→各文書形式に特化したモデルで推論することを単独で提案。データセットもDocLayNetと、ASLAが用いてきた日本語文書ではない。レイアウト解析モデルは科学技術論文のみ。
+			\item JRNAL: ICAROBと流れは同じ。データセットはDocLayNetなので、日本語文書とは言っていない。ただ、適用例は日本語文書の画像。
+			\item 紀要: 既存のASLAにルールベースを提案、Maskrcnn→cascadercnnへ変更。日本語文書のデータセットを増やした。
+			\item 修論: ICAROBから、ルールベースとcascadercnnへ変更した拡張を除いたものを既存のASLAとしている。拡張後はICGECで提案している文書形式モデル→4つの特化Cascadeモデルでのレイアウト解析、ルールベースを追加。
+	    \end{itemize}
+		\item 現状、今年のICAROBでの方針は次の3パターンを考えている。ここで注意したいのは、柿木さんが残しているASLAは修論時のみのもの。
+		\begin{itemize}
+			\item 既存のASLAのルールベースのみに着目し、背景色がある文書を含んで、新ルールベースとの評価をする。
+			\item 柿木さんの修論の内容を踏襲し、既存のASLAをICAROBで更新しておく
+			\item 柿木さんの修論の内容を踏襲し、既存のASLAをICAROBで更新する + 既存の2値化とルールベースの改良により適用範囲を拡大
+		\end{itemize}
+	\end{itemize}
+	\item データセット探し、機能しないモデルの調査
+	\begin{itemize}
+		\item 論文を改めて読むと、柿木さんが残しているデータセットは、GUIアノテーションツールで作った元データではなく、学習時用に変換したもののみ。
+		\item 既存のASLAとの比較に使っていたデータがどれかわからない状態。
+		\item スカイコムさんに調査していただいた。
+		\item 研究室共有の2台のPC内を漁った。→何とか既存のASLAのデータセットは検索を駆使して見つかった。が、学習用のアノテーションファイルが散らばっている。クラスも同じかわからない。
+		\item 柿木さんがgraduateに残している機械学習モデルのうち一つが、推論しても何も検出しない。
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item 講義・TA
+	\item バイト
+	\item ロボコン関連
+\end{itemize}
+
+
+\section{次までにやること}
+\subsection*{研究関連}
+\begin{itemize}
+	\item ICAROBのためのテストデータ探し、ないものはアノテーションを付ける
+	\item ICAROB方針固め
+	\item スカイコムさんMTG(10/30(木))
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+	\item バイト
+	\item ロボコン関連
+\end{itemize}
+\end{document}

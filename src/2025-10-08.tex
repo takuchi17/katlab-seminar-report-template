@@ -1,0 +1,96 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-10-08 Wed}
+\maketitle
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item グルーピングの試行錯誤
+	\begin{itemize}
+		\item テキスト領域のみの場合ルールベースを使えそうだが、画像や表の割り当てがうまくいかない
+		\item 画像や表の割り当てがキャプション生成器の精度に依存するため、単にテキストの内容でクラスタリングしても安定しない
+		\item 参考にできそうな論文を見つけたので、読んでいるところ
+		\begin{itemize}
+			\item "GRAPH-BASED DOCUMENT STRUCTURE ANALYSIS"(Published as a conference paper at ICLR 2025)
+			\item DocLayNetのデータセットを拡張して、領域ごとに他の領域との関係性をラベル付けしたデータセットを作成
+				\item 上下左右、順序、親、子、参照
+				\item 視覚情報のみ(テキストの内容は考慮していない)
+				\item コードとデータセットは公開されていない？(GitHubにはREADMEしかない)
+		\end{itemize}
+	\end{itemize}
+	\item AI領域分割後のルールベースの改良
+	\begin{itemize}
+		\item テキスト領域の背景が白以外だとルールベースがうまくいかない問題、新規作成する領域が何か1つにしか指定できない問題への対処
+		\item テキスト領域の補正にOCR座標を、画像領域の補正には連結成分を用いる
+		\item "text"と"figure"の2種類で生成できるようになった
+		\item ただし、OCRを実行する必要があるため、計算時間はかなり増加する
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item 玉置浩二ライブ(10/6(月)熊本城ホール)
+	\begin{itemize}
+	\item 座席は「1階1列目!!!」中央ブロック左寄り(手を伸ばせば届く距離)
+	\item バンドなアレンジ
+	\item セトリは、前半はコアなファンが喜ぶ曲、後半は有名な曲
+	\item 三部構成で2時間
+    \begin{enumerate}
+		\item 本編
+		\item トーク＆弾き語り
+		\item 公演終了アナウンス後にギター持って再登場\&合唱
+	\end{enumerate}
+	\end{itemize}
+	\item 講義・TA
+	\item バイト
+\end{itemize}
+
+
+\section{次までにやること}
+\subsection*{研究関連}
+\begin{itemize}
+	\item ASLA
+	\begin{itemize}
+		\item スカイコムさんMTG(10/9(木) 10:00～11:00)
+		\item 関連論文を参考に機械学習でのグルーピングを試す
+		\item ICAROB計画(ルールベースの改良くらいしか成果がでていない)
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 10/14(火) 不在
+	\item 玉置浩二新曲！
+	\begin{itemize}
+		\item 10/12(日)から始まる日曜劇場『ザ・ロイヤルファミリー』の主題歌
+		\item 曲名「ファンファーレ」 
+		\item ＜玉置浩二　コメント＞
+
+1年の半分以上が雪である、北海道で育った
+自分自身の幼少期を重ねて作りました。
+馬が小さい頃から育てられ、大きくなる姿は、自分の人生と重なります。
+勝ち負けではなく、そのままの自分で真っ直ぐに前に向かって行くことが、大切なんだと思います。
+ドラマ『ザ・ロイヤルファミリー』に関わる
+すべてのみなさんの力になればと願っております。
+この曲を聴いてくださる
+すべてのみなさんの人生に祝福（ファンファーレ）あれ！
+	\end{itemize}
+\end{itemize}
+\end{document}

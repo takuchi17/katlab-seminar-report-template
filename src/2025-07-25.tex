@@ -1,0 +1,78 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\bf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2025-07-25 Fri}
+\maketitle
+
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+	\item ASLAの推論時のラベル生成を名詞から固有表現とそのカテゴリに変更してみた
+	\begin{itemize}
+		\item spacyはライブラリバージョン的に互換性があることが分かった→直接組み込める
+		\item spaCy + ginzaを使用→構造での把握なので文脈を考慮できない(例:Appleはiphoneを発表した。→ Appleは人物名として抽出される)
+		\item BERTベースの日本語用NERモデルもあるみたいなので、それも試す
+	\end{itemize}
+	\item ASLA領域分割後の領域ラベルの再割り当て方法の検討
+	\begin{itemize}
+		\item text領域の細分化(例えば、introduction, list, conclusion、authorなど)がやりたい
+		\item 上下の領域のラベルを考慮して学習する？
+	\end{itemize}
+	\item 九州支部
+	\begin{itemize}
+		\item 一通り書いた
+		\item 削っているところ。何種類か書いてみる。
+	\end{itemize}
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+	\item ロボコン関連
+	\begin{itemize}
+		\item ロボコンMTG
+		\item タスク
+		\item モデルMTG
+		\item SCSKさんMTG
+	\end{itemize}
+	\item 医学部剣持研究室バイト
+	\item 健康診断
+\end{itemize}
+
+
+\section{次までにやること}
+
+\subsection*{研究関連}
+\begin{itemize}
+	\item スカイコムさんMTG(7/30(水) 13:00~14:00)
+		\item ASLA領域分割後の領域ラベルの再割り当て方法の検討
+	\item 九州支部執筆
+	\item 飛行機、宿予約
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item ロボコン関連
+		\begin{itemize}
+			\item ロボコンMTG
+			\item モデルMTG
+		\end{itemize}
+	\item 医学部剣持研究室バイト
+\end{itemize}
+
+\end{document}

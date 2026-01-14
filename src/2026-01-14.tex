@@ -1,0 +1,57 @@
+\documentclass[uplatex, onecolumn, 10pt]{jsarticle}
+
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{latexsym}
+\usepackage{bmpsize}
+\usepackage{url}
+\usepackage{comment}
+
+\def\Underline{\setbox0\hbox\bgroup\let\\\endUnderline}
+\def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
+
+\newcommand{\ttt}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{\vspace{-40mm}\textbf{\LARGE{ゼミ報告書}}}
+\author{\vspace{-40mm}宅間千隼 T2501200}
+\date{2026-01-14 Wed}
+\maketitle
+
+\section{今日までにやったこと}
+
+\subsection*{研究関連} 
+\begin{itemize}
+    \item 11クラスでの物体検出データセット構築
+    \begin{itemize}
+        \item text, title, author, table, figure, caption, pageHeader, pageFooter, sectionHeader, pageNumber, annotationの11クラス
+        \item 科学論文、スライド、帳票データセットは完了
+    \end{itemize}
+    \item DocLayNetデータセットで事前学習モデル(RTMDet)を作ってみている
+    \item 図、表、注釈、キャプションのグルーピングの正解データセットの作成とルールベースでのグルーピングを実験中
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+    \item バイト
+\end{itemize}
+
+
+\section{次までにやること}
+\subsection*{研究関連}
+\begin{itemize}
+    \item スカイコムさんMTG
+    \begin{itemize}
+        \item 1/22(木)10:00～11:00 (仮)
+    \end{itemize}
+    \item 親子関係の正解データセット構築
+    \item ルールベースでのグルーピング(要素関係の親子関係)
+\end{itemize}
+
+\subsection*{その他}
+\begin{itemize}
+    \item 講義・TA
+    \item バイト
+\end{itemize}
+\end{document}
